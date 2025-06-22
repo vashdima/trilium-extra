@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama-custom
+    container_name: ollama-custom
+    ports:
+      - "11434:11434"
+    environment:
+      - OLLAMA_HOST=0.0.0.0:11434
+      - OLLAMA_MODELS=/home/ollama/.ollama/models
+      - OLLAMA_DEBUG=INFO
+      # Optimized for Intel x86-64 performance
+      - OLLAMA_NUM_PARALLEL=4
+      - OLLAMA_MAX_LOADED_MODELS=1
+      - OLLAMA_CONTEXT_LENGTH=4096
+    volumes:
+      - /tmp:/tmp
+      # Optional: persistent storage for additional models
+      # - ./ollama-data:/home/ollama/.ollama
+    restart: unless-stopped
+    # Enable Intel GPU acceleration if available
+    devices:
+      - /dev/dri:/dev/dri
+    # Resource limits (adjust based on your Intel NUC specs)
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+        reservations:
+          memory: 2G
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - ollama-network
+
+networks:
+  ollama-network:
+    driver: bridge 
