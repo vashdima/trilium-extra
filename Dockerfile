@@ -1,7 +1,7 @@
 FROM --platform=linux/amd64 rockylinux:9
 
 # Install dependencies
-RUN dnf install -y tar unzip shadow-utils && dnf clean all
+RUN dnf install -y tar shadow-utils && dnf clean all
 
 # Copy pre-downloaded Ollama tarball from assets
 COPY assets/ollama.tar.gz /tmp/
@@ -15,12 +15,12 @@ RUN useradd -m ollama
 RUN mkdir -p /home/ollama/.ollama/models && chown -R ollama:ollama /home/ollama
 
 # Copy and extract pre-downloaded models
-COPY assets/ollama-models.zip /tmp/
+COPY assets/ollama-models.tar.gz /tmp/
 RUN cd /tmp && \
-    unzip ollama-models.zip && \
+    tar -xzf ollama-models.tar.gz && \
     mv .ollama/models/* /home/ollama/.ollama/models/ && \
     chown -R ollama:ollama /home/ollama/.ollama && \
-    rm -rf /tmp/ollama-models.zip /tmp/.ollama
+    rm -rf /tmp/ollama-models.tar.gz /tmp/.ollama
 
 ENV HOME=/home/ollama
 ENV OLLAMA_MODELS=/home/ollama/.ollama/models

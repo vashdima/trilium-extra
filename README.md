@@ -132,5 +132,10 @@ docker-compose -f docker-compose.intel.yml restart
 The Makefile handles downloading and combining split files:
 - Downloads `ollama_part_*` files from GitHub releases
 - Downloads `ollama-models-part-*` files
-- Combines them into `ollama.tar.gz` and `ollama-models.zip`
-- Skips downloads if target files already exist 
+- Combines them into `ollama.tar.gz` and `ollama-models.tar.gz`
+- Skips downloads if target files already exist
+
+Use the included `split-ollama-models.sh` script to create the split files:
+```bash
+./split-ollama-models.sh
+``` 

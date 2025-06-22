@@ -3,7 +3,7 @@ REPO := vashdima/trilium-extra
 TAG := 0.1
 DIR := assets
 OUTPUT := ollama.tar.gz
-MODELS_OUTPUT := ollama-models.zip
+MODELS_OUTPUT := ollama-models.tar.gz
 
 # === Targets ===
 .PHONY: all download-and-combine clean
